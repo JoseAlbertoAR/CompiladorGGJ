@@ -3,29 +3,32 @@
 #Biblioteca para leer el archivo de texto
 import re
 
-# Definir categorías de tokens
+# Definir tokens
 token_patterns = [
-    (r'\b(var|while|return|if|else|do|main|prints|println|reads?)\b', 'KEYWORD'),
+    (r'\b(var|while|if|else|do|main|prints|println|reads?)\b', 'KEYWORD'),
     (r'\b(add|get|set|inc|dec|reverse|size)\b', 'FUNCTION'),
     (r'\b(num|option|start|finish|temp|result|remainder)\b', 'VARIABLE'),
-    (r'\b(true|false)\b', 'BOOLEAN'),  # Identificar booleanos
+    (r'\b(true|false)\b', 'BOOLEAN'),
     (r'\b(\d+)\b', 'INTEGER_CONSTANT'),
     (r'[+\-*/%=]', 'OPERATOR'),
     (r'==|!=|>=|<=|\=\>', 'COMPARISON_OPERATOR'),
-    (r'[()\[\]{};:,]', 'PUNCTUATION'),
+    (r'\(', 'OPEN_PARENTHESIS'),
+    (r'\)', 'CLOSE_PARENTHESIS'),
+    (r'\[', 'OPEN_BRACKET'),
+    (r'\]', 'CLOSE_BRACKET'),
+    (r'{', 'OPEN_BRACE'),
+    (r'}', 'CLOSE_BRACE'),
     (r'\.', 'DOT_OPERATOR'),
     (r'".*?"', 'STRING_LITERAL'),
-    (r'<#[\s\S]*?#>', 'COMMENT'),  # Comentario en el formato <# comentario #>, puede contener saltos de línea
-    (r'\s+', 'WHITESPACE'),
+    (r'<#[\s\S]*?#>', 'COMMENT'),
+    (r';', 'SEMICOLON'),
     (r'[a-zA-Z_]\w*', 'IDENTIFIER')
 ]
-
-# Función para leer el texto desde un archivo
 def read_text_from_file(filename):
     with open(filename, 'r') as file:
         return file.read()
 
-# Función para identificar tokens
+# Identifica los tokens en el texto
 def tokenize(text):
     tokens = []
     for pattern, token_type in token_patterns:
@@ -35,19 +38,18 @@ def tokenize(text):
             tokens.append((token_type, match.group()))
     return tokens
 
-# Solicitar al usuario el nombre del archivo
 filename = input("Por favor, ingrese el nombre del archivo: ")
 
 try:
-    # Leer el texto desde el archivo
+
     texto = read_text_from_file(filename)
 
-    # Tokenizar el texto
+    # Divide el texto en los tokens
     tokens = tokenize(texto)
 
-    # Imprimir cada token uno a uno
+    # Imprimir los tokens y emparejarlos con los que se definierons
     for token in tokens:
-        print(token)
+        print(f"Token: {token[1]} (Tipo: {token[0]})")
 
 except FileNotFoundError:
     print(f"El archivo '{filename}' no se encontró.")
