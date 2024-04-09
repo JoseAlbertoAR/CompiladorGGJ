@@ -24,32 +24,51 @@ token_patterns = [
     (r';', 'SEMICOLON'),
     (r'[a-zA-Z_]\w*', 'IDENTIFIER')
 ]
+"""def read_text_from_file(filename):
+    with open(filename, 'r') as file:
+        return file.read()"""
+
+#modificado para que lea el texto por lineas
 def read_text_from_file(filename):
     with open(filename, 'r') as file:
-        return file.read()
+        text = file.read()
+        lines = text.split('\n')
+    return text, lines
 
 # Identifica los tokens en el texto
 def tokenize(text):
     tokens = []
-    for pattern, token_type in token_patterns:
-        regex = re.compile(pattern)
-        matches = regex.finditer(text)
-        for match in matches:
-            tokens.append((token_type, match.group()))
+    lines = text.split('\n')
+    current_line = 1
+    # Itera sobre cada línea del texto dividido en líneas.
+    # Esto permite procesar cada línea del texto por separado.
+    for line in lines:
+        for pattern, token_type in token_patterns:
+            regex = re.compile(pattern)
+            #Búsqueda de todas las coincidencias de un patrón regex
+            #en este caso el token dentro de una línea de texto (line)
+            matches = regex.finditer(line)
+            for match in matches:
+                token = match.group()
+                #start_index = match.start()
+                #end_index = match.end()
+                tokens.append((token_type, match.group(), current_line))
+        current_line += 1
     return tokens
 
 filename = input("Por favor, ingrese el nombre del archivo: ")
 
 try:
 
-    texto = read_text_from_file(filename)
+    texto, _ = read_text_from_file(filename)
+    #print(texto)
 
     # Divide el texto en los tokens
     tokens = tokenize(texto)
 
     # Imprimir los tokens y emparejarlos con los que se definierons
     for token in tokens:
-        print(f"Token: {token[1]} (Tipo: {token[0]})")
+        print(f"Token: {token[1]} (Tipo: {token[0]}) - Linea: {token[2]}")
 
 except FileNotFoundError:
     print(f"El archivo '{filename}' no se encontró.")
