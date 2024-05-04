@@ -38,6 +38,7 @@ def read_text_from_file(filename):
 # Identifica los tokens en el texto
 def tokenize(text):
     tokens = []
+    tokenReal = []
     lines = text.split('\n')
     current_line = 1
     # Itera sobre cada línea del texto dividido en líneas.
@@ -53,22 +54,27 @@ def tokenize(text):
                 #start_index = match.start()
                 #end_index = match.end()
                 tokens.append((token_type, match.group(), current_line))
+                tokenReal.append((token_type))
+                #print(tokenReal)
         current_line += 1
     return tokens
+    #return tokenReal
 
-filename = input("Por favor, ingrese el nombre del archivo: ")
+def process_file():
+    filename = input("Por favor, ingrese el nombre del archivo: ")
+    try:
+        texto, _ = read_text_from_file(filename)
+        #Divide el texto en tokens
+        tokens = tokenize(texto)
+        for token in tokens:
+            print(f"Token: {token[1]} (Tipo: {token[0]}) - Linea: {token[2]}")
+            
+    except FileNotFoundError:
+        print(f"El archivo '{filename}' no se encontró.")
+    return tokens
 
-try:
+def main():
+    process_file()
 
-    texto, _ = read_text_from_file(filename)
-    #print(texto)
-
-    # Divide el texto en los tokens
-    tokens = tokenize(texto)
-
-    # Imprimir los tokens y emparejarlos con los que se definierons
-    for token in tokens:
-        print(f"Token: {token[1]} (Tipo: {token[0]}) - Linea: {token[2]}")
-
-except FileNotFoundError:
-    print(f"El archivo '{filename}' no se encontró.")
+if __name__ == "__main__":
+    main()
