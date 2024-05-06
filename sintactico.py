@@ -27,12 +27,12 @@ def parsilntactico(tokens):
             print("SUCCESS!")
             break
         else:
-            print('ERROR: token not expected', tokens[0])
+            print('ERROR: token not expected', tokens[0][1])
             break
 
         # Obtener la próxima acción y estado
         try:
-            act, state = action(stack[-1], tokens[0])
+            act, state = action(stack[-1], tokens[0][1])
         except Exception as error:
             print('ERROR:', error)
             break
