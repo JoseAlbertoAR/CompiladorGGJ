@@ -1,0 +1,19 @@
+Compilador Sintatico para el reconocimineto de reglas en el lenguaje de lexer.
+
+Uso de bibliotecas Goto para el analisis de los tokens asi como especificación de la reglas para el procesamiento de los datos de entrada y analsis comparativo del mismo, estas no se necesitaran instalar ya que se encuentran dentro de las librerias de python 
+
+Para su ejecución es en un entorno IDE de python 3.11(puede llegar a funcionar en versiones anteriores).
+
+Solo se ingresa archivos de texto(.txt) par ala ejecución del programa.
+
+Este regresara como respuesta:
+
+- Las reglas obtenidas
+- Si presenta errores sintacticos, en caso contrario mostrara en SUCCESS
+- Si el Token no era el esperado
+- Las reglas una vez ontenida la función
+- La reducción correspondiente
+- Si las reglas no coinciden
+- Las transiciones de las reglas
+
+Teniendo como resultado la reducción necesaria para el analisis sintactico.
