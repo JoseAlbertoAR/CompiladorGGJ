@@ -1,9 +1,4 @@
-﻿<# File: 001_hello.falak
-   The classical "hello, world" program.
-   (C) 2021 Ariel Ortiz, ITESM CEM.
-#>
-
-main() {
+﻿main() {
     prints("hello, world\n");;;
     return 42;;;
 }
