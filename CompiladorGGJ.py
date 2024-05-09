@@ -38,7 +38,6 @@ def read_text_from_file(filename):
 # Identifica los tokens en el texto
 def tokenize(text):
     tokens = []
-    tokenReal = []
     lines = text.split('\n')
     current_line = 1
     # Itera sobre cada línea del texto dividido en líneas.
@@ -54,11 +53,8 @@ def tokenize(text):
                 #start_index = match.start()
                 #end_index = match.end()
                 tokens.append((token_type, match.group(), current_line))
-                tokenReal.append((token_type))
-                #print(tokenReal)
         current_line += 1
     return tokens
-    #return tokenReal
 
 def process_file():
     filename = input("Por favor, ingrese el nombre del archivo: ")
