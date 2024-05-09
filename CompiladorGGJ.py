@@ -30,7 +30,7 @@ def read_text_from_file(filename):
     with open(filename, 'r') as file:
         return file.read()
 
-def tokenize(text):
+"""def tokenize(text):
     tokens = []
     is_comment = False  
     variables = set()  
@@ -47,6 +47,42 @@ def tokenize(text):
                 if token_type == 'VARIABLE':
                     variables.add(token.split()[1])  
                 tokens.append((token_type, token))
+    return tokens, variables"""
+
+def tokenize(text):
+    tokens = []
+    is_comment = False
+    comment_buffer = ""
+    variables = set()
+    lines = text.split('\n')
+    current_line = 1
+    # Itera sobre cada línea del texto dividido en líneas.
+    # Esto permite procesar cada línea del texto por separado.
+    for line in lines:
+        for pattern, token_type in token_patterns:
+            regex = re.compile(pattern)
+            #Búsqueda de todas las coincidencias de un patrón regex
+            #en este caso el token dentro de una línea de texto (line)
+            matches = regex.finditer(line)
+            for match in matches:
+                token = match.group()
+                if token_type == 'COMMENT':
+                    if not is_comment:
+                        is_comment = True
+                        comment_buffer = ""  # Limpiar buffer de comentarios
+                    comment_buffer += token + "\n"  # Agregar línea de comentario al buffer
+                    break
+                if not is_comment:
+                    if token_type == 'VARIABLE':
+                        variables.add(token.split()[1])
+                    tokens.append((token_type, match.group(), current_line))
+        current_line += 1
+        if is_comment and not line.strip().endswith("#>"):
+            continue  # Si todavía estamos en un comentario, saltar al siguiente ciclo
+        elif is_comment:  # Si hemos alcanzado el final del comentario
+            tokens.append(('COMMENT', comment_buffer.strip(), current_line - len(comment_buffer.split('\n')) + 1))
+            is_comment = False
+            comment_buffer = ""         
     return tokens, variables
 
 filename = input("Por favor, ingrese el nombre del archivo: ")
@@ -56,8 +92,8 @@ try:
     tokens, variables = tokenize(texto)
 
     # Imprimir los tokens y emparejarlos con los que se definieron
-    table_headers = ["Tipo de Token", "Token"]
-    table_data = [(token_type, token) for token_type, token in tokens]
+    table_headers = ["Tipo de Token", "Token","Línea"]
+    table_data = [(token_type, token, line) for token_type, token, line in tokens]
     print(tabulate(table_data, headers=table_headers, tablefmt="grid"))
 
     # Mostrar las variables encontradas
